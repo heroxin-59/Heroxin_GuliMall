@@ -14,5 +14,6 @@
         <module>GuliMall-Order</module>
         <module>GuliMall-Product</module>
         <module>GuliMall-Ware</module>
+        <module>renren-fast</module>
     </modules>
 </project>
