@@ -1,19 +1,15 @@
 package com.heroxin.gulimall.member.controller;
 
-import java.util.Arrays;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.heroxin.gulimall.member.entity.MemberEntity;
-import com.heroxin.gulimall.member.service.MemberService;
 import com.heroxin.gulimall.common.utils.PageUtils;
 import com.heroxin.gulimall.common.utils.R;
+import com.heroxin.gulimall.member.entity.MemberEntity;
+import com.heroxin.gulimall.member.feign.CouponFeignService;
+import com.heroxin.gulimall.member.service.MemberService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
+import java.util.Map;
 
 
 
@@ -29,6 +25,16 @@ import com.heroxin.gulimall.common.utils.R;
 public class MemberController {
     @Autowired
     private MemberService memberService;
+    @Autowired
+     CouponFeignService couponFeignService;
+
+    @RequestMapping("/coupons")
+    public R test(){
+        MemberEntity memberEntity = new MemberEntity();
+        memberEntity.setNickname("hero");
+        R membercoupons = couponFeignService.membercoupons();
+        return R.ok().put("member", memberEntity).put("coupons",membercoupons.get("coupons"));
+    }
 
     /**
      * 列表

@@ -8,6 +8,7 @@ spring:
   cloud:
     nacos:
       server-addr: 127.0.0.1:8848
+
   application:
     name: GuliMall-Member
 #    配置mybatis-plus，需要扫描mapper文件，设置主键自增
