@@ -1,0 +1,17 @@
+package com.heroxin.gulimall.ware.dao;
+
+import com.heroxin.gulimall.ware.entity.PurchaseEntity;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
+
+/**
+ * 采购信息
+ * 
+ * @author heroxin
+ * @email hero_xin59@163.com
+ * @date 2023-03-27 10:53:25
+ */
+@Mapper
+public interface PurchaseDao extends BaseMapper<PurchaseEntity> {
+	
+}
