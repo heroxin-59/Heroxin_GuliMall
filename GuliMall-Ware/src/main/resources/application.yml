@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    username: root
+    password: heroxin
+    url: jdbc:mysql://192.168.196.101:3306/gulimall_wms
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  #    将服务注册到Nacos，需要nacos地址和服务名称
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+  application:
+    name: GuliMall-Ware
+#    配置mybatis-plus，需要扫描mapper文件，设置主键自增
+mybatis-plus:
+  mapper-locations: classpath:/mapper/**/*.xml
+  global-config:
+    db-config:
+      id-type: auto
+server:
+  port: 11000
