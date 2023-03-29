@@ -5,6 +5,8 @@ import com.heroxin.gulimall.common.utils.R;
 import com.heroxin.gulimall.coupon.entity.CouponEntity;
 import com.heroxin.gulimall.coupon.service.CouponService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -19,18 +21,35 @@ import java.util.Map;
  * @email hero_xin59@163.com
  * @date 2023-03-27 10:33:04
  */
+
+// 刷新配置
+@RefreshScope
 @RestController
 @RequestMapping("coupon/coupon")
 public class CouponController {
     @Autowired
     private CouponService couponService;
 
+    @Value("${coupon.user.name}")
+    private String name;
+    @Value("${coupon.user.age}")
+    private String age;
+
+
+//    测试 feign 远程服务调用
     @RequestMapping("/member/list")
     public R membercoupons(){
         CouponEntity couponEntity = new CouponEntity();
         couponEntity.setCouponName("满100减200");
         return R.ok().put("coupons",Arrays.asList(couponEntity));
     }
+
+//    测试 nacos 配置中心
+    @RequestMapping("/nacosCfg")
+    public R testNacosConfig(){
+        return R.ok().put("name",name).put("age",age);
+    }
+
 
     /**
      * 列表

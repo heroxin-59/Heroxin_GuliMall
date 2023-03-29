@@ -1,0 +1,16 @@
+spring:
+  application:
+    # \u670D\u52A1\u540D\u79F0
+    name: GuliMall-Coupon
+  cloud:
+    nacos:
+      # \u914D\u7F6E\u4E2D\u5FC3\u5730\u5740
+      server-addr: 127.0.0.1:8848
+      config:
+        # \u914D\u7F6E\u4E2D\u5FC3\u7684\u6587\u4EF6\u540E\u7F00
+        file-extension: yaml
+        # \u914D\u7F6E\u6587\u4EF6\u6240\u5C5E\u7EC4
+        group: dev
+#        group: prop
+        # \u914D\u7F6E\u547D\u540D\u7A7A\u95F4\uFF1A\u5373\u5F00\u53D1\u73AF\u5883
+        namespace: 6b7a84db-c36c-4197-ba58-b624c56947f2

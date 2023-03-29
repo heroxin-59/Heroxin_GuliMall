@@ -13,7 +13,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 * 4.声明接口的每一个方法是调用服务的哪个请求
 * 5.开启远程调用功能
 * */
-//@ComponentScan("com.heroxin.gulimall.member.feign")
 
 @EnableFeignClients
 @EnableDiscoveryClient

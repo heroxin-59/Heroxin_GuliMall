@@ -19,3 +19,7 @@ mybatis-plus:
 server:
   port: 7000
 
+coupon:
+  user:
+    name: heroxin
+    age: 59

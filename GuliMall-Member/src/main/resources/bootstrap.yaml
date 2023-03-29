@@ -1,0 +1,19 @@
+spring:
+  application:
+    # 服务名称
+    name: GuliMall-Member
+  cloud:
+    nacos:
+      # 配置中心地址
+      server-addr: 127.0.0.1:8848
+      config:
+        # 配置中心的文件后缀
+        file-extension: yaml
+        # 配置文件所属组
+        group: dev
+        #        group: prop
+        # 配置命名空间：即开发环境
+        namespace: 6aac445d-aa70-4fe3-bf57-173c059bba18
+
+
+
