@@ -74,11 +74,13 @@ public class CategoryController {
     }
 
     /**
+     * heroxin
      * 删除
      */
     @RequestMapping("/delete")
     public R delete(@RequestBody Long[] catIds){
-		categoryService.removeByIds(Arrays.asList(catIds));
+//        检查当前被删除的菜单是否被引用
+		categoryService.removeMenuByIds(Arrays.asList(catIds));
 
         return R.ok();
     }
