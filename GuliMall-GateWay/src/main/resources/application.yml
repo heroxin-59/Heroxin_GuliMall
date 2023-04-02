@@ -7,12 +7,7 @@ spring:
       server-addr: 127.0.0.1:8848
     gateway:
       routes:
-        - id: test_route
-          uri: https://heroxin.xyz
-          predicates:
-            - Query=url,heroxin
-            #              将所有前端请求路由到 renren-fast
-#
+#        product
         - id: product_rout
           uri: lb://GuliMall-Product
           predicates:
@@ -20,6 +15,15 @@ spring:
           filters:
             - RewritePath=/api/(?<segment>/?.*), /$\{segment}
 
+#        thirdparty
+        - id: thirdparty_rout
+          uri: lb://GuliMall-ThirdParty
+          predicates:
+            - Path=/api/thirdparty/**
+          filters:
+            - RewritePath=/api/thirdparty/(?<segment>/?.*), /$\{segment}
+
+#        renren-fast
         - id: admin_route
           uri: lb://renren-fast
           predicates:

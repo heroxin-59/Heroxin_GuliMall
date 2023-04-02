@@ -17,6 +17,6 @@
         <module>GuliMall-Common</module>
         <module>GuliMall-GateWay</module>
         <module>renren-fast</module>
-        <module>renren-generator</module>
+<!--        <module>renren-generator</module>-->
     </modules>
 </project>

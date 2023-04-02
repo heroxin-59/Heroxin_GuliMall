@@ -15,10 +15,17 @@
         <spring-cloud.version>2021.0.5</spring-cloud.version>
     </properties>
     <dependencies>
+        <!--        springboot 整合gateway是，gateway 中的 spring-boot-starter-webflux 和 spring-boot-starter-web 冲突，需要排除-->
         <dependency>
             <groupId>com.heroxin.gulimall</groupId>
             <artifactId>GuliMall-Common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-web</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
