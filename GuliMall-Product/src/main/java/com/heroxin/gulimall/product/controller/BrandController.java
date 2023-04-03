@@ -15,6 +15,7 @@ import com.heroxin.gulimall.product.service.BrandService;
 import com.heroxin.gulimall.common.utils.PageUtils;
 import com.heroxin.gulimall.common.utils.R;
 
+import javax.validation.Valid;
 
 
 /**
@@ -53,11 +54,11 @@ public class BrandController {
 
     /**
      * 保存
+     * @valild 开启校验功能
      */
     @RequestMapping("/save")
-    public R save(@RequestBody BrandEntity brand){
+    public R save(@Valid  @RequestBody BrandEntity brand){
 		brandService.save(brand);
-
         return R.ok();
     }
 
