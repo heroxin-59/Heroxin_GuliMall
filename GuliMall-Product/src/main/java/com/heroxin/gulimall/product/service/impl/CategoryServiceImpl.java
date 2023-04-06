@@ -2,6 +2,8 @@ package com.heroxin.gulimall.product.service.impl;
 
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -50,10 +52,29 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
     @Override
     public void removeMenuByIds(List<Long> asList) {
-//        TODO 检查当前删除菜单是否被别处引用
 //        逻辑删除，使用标识位，表示是否存在
 
         baseMapper.deleteBatchIds(asList);
+    }
+
+    @Override
+    public Long[] findCatelogPath(Long catelogId) {
+        List<Long> path = new ArrayList<>();
+        List<Long> paretPath = findParetPath(catelogId, path);
+        Collections.reverse(paretPath);
+
+
+        return paretPath.toArray(new Long[paretPath.size()]);
+    }
+
+    private List<Long> findParetPath(Long catelogId, List<Long> path) {
+        path.add(catelogId);
+        CategoryEntity byId = this.getById(catelogId);
+        if (byId.getParentCid() != 0) {
+            findParetPath(byId.getParentCid(), path);
+        }
+        return path;
+
     }
 
     //    获取所有菜单的子菜单
