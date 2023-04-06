@@ -1,5 +1,7 @@
 package com.heroxin.gulimall.product.service.impl;
 
+import com.heroxin.gulimall.product.service.CategoryBrandRelationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,10 +19,13 @@ import com.heroxin.gulimall.common.utils.Query;
 import com.heroxin.gulimall.product.dao.CategoryDao;
 import com.heroxin.gulimall.product.entity.CategoryEntity;
 import com.heroxin.gulimall.product.service.CategoryService;
+import org.springframework.util.StringUtils;
 
 
 @Service("categoryService")
 public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity> implements CategoryService {
+    @Autowired
+    private CategoryBrandRelationService categoryBrandRelationService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -66,6 +71,16 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
         return paretPath.toArray(new Long[paretPath.size()]);
     }
+
+    @Override
+    public void updateCascade(CategoryEntity category) {
+        this.updateById(category);
+        System.out.println("--------------sdfsdf-------------");
+        System.out.println(category.getName());
+        System.out.println("---------------sdfsdf-------------");
+        categoryBrandRelationService.updateCategory(category.getCatId(), category.getName());
+    }
+
 
     private List<Long> findParetPath(Long catelogId, List<Long> path) {
         path.add(catelogId);

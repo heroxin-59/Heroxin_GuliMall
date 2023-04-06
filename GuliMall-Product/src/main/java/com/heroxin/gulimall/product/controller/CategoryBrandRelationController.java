@@ -1,14 +1,12 @@
 package com.heroxin.gulimall.product.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.heroxin.gulimall.product.entity.CategoryBrandRelationEntity;
 import com.heroxin.gulimall.product.service.CategoryBrandRelationService;
@@ -31,6 +29,17 @@ public class CategoryBrandRelationController {
     private CategoryBrandRelationService categoryBrandRelationService;
 
     /**
+     * heroxin
+     * 当前品牌关联的所有分类列表
+     */
+    @GetMapping("/catelog/list")
+    public R catelogList(@RequestParam("brandId") Long brandId){
+        List<CategoryBrandRelationEntity> data = categoryBrandRelationService.list(
+                new QueryWrapper<CategoryBrandRelationEntity>().eq("brand_id",brandId)
+        );
+        return R.ok().put("data", data);
+    }
+    /**
      * 列表
      */
     @RequestMapping("/list")
@@ -52,11 +61,13 @@ public class CategoryBrandRelationController {
     }
 
     /**
+     * heroxin
      * 保存
      */
     @RequestMapping("/save")
     public R save(@RequestBody CategoryBrandRelationEntity categoryBrandRelation){
-		categoryBrandRelationService.save(categoryBrandRelation);
+        System.out.println(categoryBrandRelation.getBrandId());
+        categoryBrandRelationService.saveDetail(categoryBrandRelation);
 
         return R.ok();
     }

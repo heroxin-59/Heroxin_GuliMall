@@ -1,8 +1,10 @@
 package com.heroxin.gulimall.product.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
+import com.heroxin.gulimall.product.entity.CategoryBrandRelationEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -67,7 +69,7 @@ public class BrandController {
      */
     @RequestMapping("/update")
     public R update(@RequestBody BrandEntity brand){
-		brandService.updateById(brand);
+		brandService.updateByIdDetail(brand);
 
         return R.ok();
     }

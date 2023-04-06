@@ -1,5 +1,7 @@
 package com.heroxin.gulimall.product.service.impl;
 
+import com.heroxin.gulimall.product.service.CategoryBrandRelationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.awt.image.Kernel;
@@ -18,7 +20,8 @@ import org.springframework.util.StringUtils;
 
 @Service("brandService")
 public class BrandServiceImpl extends ServiceImpl<BrandDao, BrandEntity> implements BrandService {
-
+    @Autowired
+    private CategoryBrandRelationService categoryBrandRelationService;
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
 //        模糊查询
@@ -34,6 +37,17 @@ public class BrandServiceImpl extends ServiceImpl<BrandDao, BrandEntity> impleme
         );
 
         return new PageUtils(page);
+    }
+
+    @Override
+    public void updateByIdDetail(BrandEntity brand) {
+        this.updateById(brand);
+        if (!StringUtils.isEmpty(brand.getName())){
+//            同步更新关联表中的信息
+            categoryBrandRelationService.updateBrand(brand.getBrandId(),brand.getName());
+
+
+        }
     }
 
 }
