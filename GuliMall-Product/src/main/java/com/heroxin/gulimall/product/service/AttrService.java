@@ -3,9 +3,11 @@ package com.heroxin.gulimall.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.heroxin.gulimall.common.utils.PageUtils;
 import com.heroxin.gulimall.product.entity.AttrEntity;
+import com.heroxin.gulimall.product.vo.AttrGroupRelationVo;
 import com.heroxin.gulimall.product.vo.AttrResponseVo;
 import com.heroxin.gulimall.product.vo.AttrVo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,5 +30,11 @@ public interface AttrService extends IService<AttrEntity> {
     AttrResponseVo getAttrInfo(Long attrId);
 
     void updateAttr(AttrResponseVo attr);
+
+    List<AttrEntity> getRelationAttr(Long attrgroupId);
+
+    void delAttrRelation(AttrGroupRelationVo[] attrGroupRelationVo);
+
+    PageUtils getNoAttrRelation(Map<String, Object> params, Long attrgroupId);
 }
 
