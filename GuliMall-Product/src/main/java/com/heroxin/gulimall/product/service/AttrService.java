@@ -3,6 +3,8 @@ package com.heroxin.gulimall.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.heroxin.gulimall.common.utils.PageUtils;
 import com.heroxin.gulimall.product.entity.AttrEntity;
+import com.heroxin.gulimall.product.vo.AttrResponseVo;
+import com.heroxin.gulimall.product.vo.AttrVo;
 
 import java.util.Map;
 
@@ -17,8 +19,14 @@ public interface AttrService extends IService<AttrEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
 
-    PageUtils queryBaseAttrPage(Map<String, Object> params, Long catelogId);
+    PageUtils queryBaseAttrPage(Map<String, Object> params, Long catelogId, String attrType);
 
     PageUtils querySellAttrPage(Map<String, Object> params, Long catelogId, String attrType);
+
+    void saveAttr(AttrVo attr);
+
+    AttrResponseVo getAttrInfo(Long attrId);
+
+    void updateAttr(AttrResponseVo attr);
 }
 

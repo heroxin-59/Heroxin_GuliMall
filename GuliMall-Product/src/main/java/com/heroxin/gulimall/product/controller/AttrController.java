@@ -3,6 +3,8 @@ package com.heroxin.gulimall.product.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.heroxin.gulimall.product.vo.AttrResponseVo;
+import com.heroxin.gulimall.product.vo.AttrVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,23 +27,26 @@ public class AttrController {
     @Autowired
     private AttrService attrService;
 
-    @GetMapping("/base/list/{catelogId}")
-    public R baseAttrList(@RequestParam Map<String, Object> params, @PathVariable("catelogId") Long catelogId) {
-        PageUtils page = attrService.queryBaseAttrPage(params, catelogId);
+    @GetMapping("/{attrType}/list/{catelogId}")
+    public R baseAttrList(@RequestParam Map<String, Object> params,
+                          @PathVariable("catelogId") Long catelogId,
+                          @PathVariable("attrType") String attrType
+    ) {
+        PageUtils page = attrService.queryBaseAttrPage(params, catelogId,attrType);
 
         return R.ok().put("page", page);
     }
 
-    @GetMapping("/{attrType}/list/{catelogId}")
+/*    @GetMapping("/{attrType}/list/{catelogId}")
     public R sellAttrList(
             @RequestParam Map<String, Object> params,
             @PathVariable("catelogId") Long catelogId,
             @PathVariable("attrType") String attrType
     ) {
-        PageUtils page = attrService.querySellAttrPage(params, catelogId,attrType);
+        PageUtils page = attrService.querySellAttrPage(params, catelogId, attrType);
 
         return R.ok().put("page", page);
-    }
+    }*/
 
     /**
      * 列表
@@ -59,17 +64,17 @@ public class AttrController {
      */
     @RequestMapping("/info/{attrId}")
     public R info(@PathVariable("attrId") Long attrId) {
-        AttrEntity attr = attrService.getById(attrId);
-
-        return R.ok().put("attr", attr);
+//        AttrEntity attr = attrService.getById(attrId);
+        AttrResponseVo attrResponseVo = attrService.getAttrInfo(attrId);
+        return R.ok().put("attr", attrResponseVo);
     }
 
     /**
      * 保存
      */
     @RequestMapping("/save")
-    public R save(@RequestBody AttrEntity attr) {
-        attrService.save(attr);
+    public R save(@RequestBody AttrVo attr) {
+        attrService.saveAttr(attr);
 
         return R.ok();
     }
@@ -78,8 +83,8 @@ public class AttrController {
      * 修改
      */
     @RequestMapping("/update")
-    public R update(@RequestBody AttrEntity attr) {
-        attrService.updateById(attr);
+    public R update(@RequestBody AttrResponseVo attr) {
+        attrService.updateAttr(attr);
 
         return R.ok();
     }
