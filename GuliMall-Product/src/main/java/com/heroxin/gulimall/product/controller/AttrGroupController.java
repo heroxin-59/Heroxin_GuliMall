@@ -9,6 +9,7 @@ import com.heroxin.gulimall.product.service.AttrAttrgroupRelationService;
 import com.heroxin.gulimall.product.service.AttrService;
 import com.heroxin.gulimall.product.service.CategoryService;
 import com.heroxin.gulimall.product.vo.AttrGroupRelationVo;
+import com.heroxin.gulimall.product.vo.AttrGroupWithAttrsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +37,21 @@ public class AttrGroupController {
     private AttrService attrService;
     @Autowired
     private AttrAttrgroupRelationService relationService;
+
+
+    /*
+    * heroxin
+    * 获取分类下所有分组&关联属性
+    * /product/attrgroup/{catelogId}/withattr
+    * */
+    @GetMapping("/{catelogId}/withattr")
+    public R getAttrGroupaWithAttrs(@PathVariable("catelogId")Long catelogId){
+//        查出当前分类下的所有属性分组
+//        查出每个属性分组下的所有属性
+        List<AttrGroupWithAttrsVo> vos = attrGroupService.getAttrGroupWithAttrsByCatelogId(catelogId);
+        return R.ok().put("data",vos);
+    }
+
 
     /*
     * heroxin
