@@ -10,6 +10,8 @@ spring:
       server-addr: 127.0.0.1:8848
   application:
     name: GuliMall-Product
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
 #    配置mybatis-plus，需要扫描mapper文件，设置主键自增
 mybatis-plus:
   configuration:
@@ -22,5 +24,4 @@ mybatis-plus:
       logic-not-delete-value: 0
 server:
   port: 10000
-
 
