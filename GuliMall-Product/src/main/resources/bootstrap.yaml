@@ -12,7 +12,7 @@ spring:
         # 配置文件所属组
         group: dev
         #        group: prop
-        # 配置命名空间：即开发环境
+        # 配置命名空间
         namespace: 57605f72-356b-486d-bef5-a40cf2fcecc1
 
 

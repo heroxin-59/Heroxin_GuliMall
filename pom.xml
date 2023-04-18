@@ -16,7 +16,9 @@
         <module>GuliMall-Ware</module>
         <module>GuliMall-Common</module>
         <module>GuliMall-GateWay</module>
+        <module>GuliMall-ThirdParty</module>
+        <module>GuliMall-Search</module>
         <module>renren-fast</module>
-<!--        <module>renren-generator</module>-->
+        <!--        <module>renren-generator</module>-->
     </modules>
 </project>
