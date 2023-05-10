@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -61,18 +62,27 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
 
     }
 
+    /**
+            * 根据分类id查出所有分组和分组属性
+     * @param catelogId
+     * @return
+             */
     @Override
     public List<AttrGroupWithAttrsVo> getAttrGroupWithAttrsByCatelogId(Long catelogId) {
-//        查询分组信息
+        //获得在属性分组表中的所有属于当前分类的实体
         List<AttrGroupEntity> attrGroupEntities = this.list(new QueryWrapper<AttrGroupEntity>().eq("catelog_id", catelogId));
-//        查询所有属性
-        List<AttrGroupWithAttrsVo> collect = attrGroupEntities.stream().map(attrGroupEntity -> {
+        List<AttrGroupWithAttrsVo> collect = attrGroupEntities.stream().map((group) -> {
             AttrGroupWithAttrsVo attrsVo = new AttrGroupWithAttrsVo();
-            BeanUtils.copyProperties(attrGroupEntity, attrsVo);
+            BeanUtils.copyProperties(group,attrsVo);
+            //当前分组下的所有属性（没有"valueType": 0,）
             List<AttrEntity> attr = attrService.getRelationAttr(attrsVo.getAttrGroupId());
             attrsVo.setAttrs(attr);
-            return attrsVo;
+            if ( attr!=null){
+                return attrsVo;
+            }
+            return null;
         }).collect(Collectors.toList());
+        collect.removeIf(Objects::isNull);
         return collect;
     }
 

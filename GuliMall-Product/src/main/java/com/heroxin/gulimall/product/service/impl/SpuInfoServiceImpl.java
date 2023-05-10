@@ -266,11 +266,12 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
         try {
             R skuHasStock = wareFeignService.getSkuHasStock(skuIdList);
             //
-            TypeReference<List<SkuHasStockVo>> typeReference = new TypeReference<List<SkuHasStockVo>>() {};
+            TypeReference<List<SkuHasStockVo>> typeReference = new TypeReference<List<SkuHasStockVo>>() {
+            };
             stockMap = skuHasStock.getData(typeReference).stream()
                     .collect(Collectors.toMap(SkuHasStockVo::getSkuId, item -> item.getHasStock()));
         } catch (Exception e) {
-            log.error("库存服务查询异常：原因{}",e);
+            log.error("库存服务查询异常：原因{}", e);
         }
 
         //2、封装每个sku的信息
@@ -302,7 +303,7 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
             //设置检索属性
             esModel.setAttrs(attrsList);
 
-            BeanUtils.copyProperties(sku,esModel);
+            BeanUtils.copyProperties(sku, esModel);
 
             return esModel;
         }).collect(Collectors.toList());
@@ -311,90 +312,10 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
 
         if (r.getCode() == 0) {
             //远程调用成功
-            this.baseMapper.updateSpuStatus(spuId, ProductConstant.ProductStatusEnum.SPU_UP.getCode());
+            this.baseMapper.updaSpuStatus(spuId, ProductConstant.ProductStatusEnum.SPU_UP.getCode());
         } else {
             //远程调用失败
         }
     }
-/*//        查出当前spuid对应的所有sku信息，品牌名称
-        List<SkuInfoEntity> skus = skuInfoService.getSkusBySpuId(spuId);
-
-//            查询当前所有可以用来被检索的规格属性
-        List<ProductAttrValueEntity> baseAttrs = productAttrValueService.baseAttrListforspu(spuId);
-        List<Long> attrIds = baseAttrs.stream().map(attr -> {
-            return attr.getAttrId();
-        }).collect(Collectors.toList());
-
-        System.out.println("==========");
-        for (Long attrId : attrIds) {
-            System.out.println(attrId);
-        }
-        System.out.println("==========");
-        List<Long> searchAttrIds = attrService.selectSearchAttrIds(attrIds);
-
-        Set<Long> idSet = new HashSet<>(searchAttrIds);
-
-        List<SkuEsModel.Attrs> attrsList = baseAttrs.stream().filter(item -> {
-            return idSet.contains(item.getAttrId());
-        }).map(item -> {
-            SkuEsModel.Attrs attrs1 = new SkuEsModel.Attrs();
-            BeanUtils.copyProperties(item, attrs1);
-            return attrs1;
-        }).collect(Collectors.toList());
-
-
-        List<Long> skuIdList = skus.stream().map(SkuInfoEntity::getSkuId).collect(Collectors.toList());
-
-        //         送远程调用，库存系统查询是否有库存
-        Map<Long, Boolean> stockMap = null;
-        try {
-            R r = wareFeignService.getSkuHasStock(skuIdList);
-            TypeReference<List<SkuHasStockVo>> typeReference = new TypeReference<List<SkuHasStockVo>>() {
-            };
-            stockMap = r.getData(typeReference).stream().collect(Collectors.toMap(SkuHasStockVo::getSkuId, item -> item.getHasStock()));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-//        组装需要的数据
-        Map<Long, Boolean> finalStockMap = stockMap;
-        List<SkuEsModel> upProducts = skus.stream().map(sku -> {
-            SkuEsModel esModel = new SkuEsModel();
-            BeanUtils.copyProperties(sku, esModel);
-            esModel.setSkuPrice(sku.getPrice());
-            esModel.setSkuImg(sku.getSkuDefaultImg());
-
-            if (finalStockMap == null) {
-                esModel.setHasStock(true);
-            } else {
-                esModel.setHasStock(finalStockMap.get(sku.getSkuId()));
-            }
-//            热度评分
-            esModel.setHotScore(0L);
-//            查询品牌和分类的信息
-            BrandEntity brand = brandService.getById(esModel.getBrandId());
-            esModel.setBrandName(brand.getName());
-            esModel.setBrandImg(brand.getLogo());
-            CategoryEntity category = categoryService.getById(esModel.getCatalogId());
-            esModel.setCatalogName(category.getName());
-
-//          设置检索属性
-            esModel.setArrts(attrsList);
-
-            return esModel;
-        }).collect(Collectors.toList());
-
-//        将数据发送给es进行保存： gulimall-search
-        R r = searchFeignService.productStatusUp(upProducts);
-        if (r.getCode() == 0) {
-//            远程调用成功
-//            修改spu状态为：已上架
-            baseMapper.updateSpuStatus(spuId, ProductConstant.StatusEnum.SPU_UP.getCode());
-        } else {
-//            远程调用失败
-        }
-    }*/
 
 }
