@@ -36,5 +36,11 @@ public interface AttrService extends IService<AttrEntity> {
     void delAttrRelation(AttrGroupRelationVo[] attrGroupRelationVo);
 
     PageUtils getNoAttrRelation(Map<String, Object> params, Long attrgroupId);
+
+    /*
+    * heroxin
+    * 在指定的所有属性集合里，挑出需要的
+    * */
+    List<Long> selectSearchAttrIds(List<Long> attrIds);
 }
 

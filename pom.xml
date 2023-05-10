@@ -19,6 +19,5 @@
         <module>GuliMall-ThirdParty</module>
         <module>GuliMall-Search</module>
         <module>renren-fast</module>
-        <!--        <module>renren-generator</module>-->
     </modules>
 </project>
