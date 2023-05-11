@@ -12,6 +12,9 @@ spring:
     name: GuliMall-Product
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
+    # 关闭 thymeleaf 缓存
+  thymeleaf:
+    cache: false
 #    配置mybatis-plus，需要扫描mapper文件，设置主键自增
 mybatis-plus:
   configuration:
