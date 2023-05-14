@@ -1,3 +1,5 @@
+server:
+  port: 10000
 spring:
   datasource:
     username: root
@@ -18,6 +20,15 @@ spring:
     # 配置redis
   redis:
     host: 192.168.196.101
+  #    配置缓存
+  cache:
+    #    使用redis作为缓存
+    type: redis
+    redis:
+      #    设置过期时间为一小时，
+      time-to-live: 3600000
+      #      设置前缀
+#      key-prefix: CACHE_
 
 #    配置mybatis-plus，需要扫描mapper文件，设置主键自增
 mybatis-plus:
@@ -29,8 +40,8 @@ mybatis-plus:
       id-type: auto
       logic-delete-value: 1 # 表示已删除
       logic-not-delete-value: 0
-server:
-  port: 10000
+
+
 
 
 

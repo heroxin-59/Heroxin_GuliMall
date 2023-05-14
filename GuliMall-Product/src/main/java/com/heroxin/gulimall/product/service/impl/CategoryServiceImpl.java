@@ -8,6 +8,8 @@ import org.redisson.api.RLock;
 import org.redisson.api.RReadWriteLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,7 @@ import com.heroxin.gulimall.common.utils.Query;
 import com.heroxin.gulimall.product.dao.CategoryDao;
 import com.heroxin.gulimall.product.entity.CategoryEntity;
 import com.heroxin.gulimall.product.service.CategoryService;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 
@@ -85,23 +88,67 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         return paretPath.toArray(new Long[paretPath.size()]);
     }
 
+    //    缓存失效模式使用
+    @CacheEvict(value = "category", allEntries = true)       //删除某个分区下的所有数据
+    @Transactional
     @Override
     public void updateCascade(CategoryEntity category) {
         this.updateById(category);
-        System.out.println("--------------sdfsdf-------------");
         System.out.println(category.getName());
-        System.out.println("---------------sdfsdf-------------");
         categoryBrandRelationService.updateCategory(category.getCatId(), category.getName());
     }
 
+    @Cacheable(value = {"category"}, key = "#root.method.name")
     @Override
     public List<CategoryEntity> getLevel1Category() {
         List<CategoryEntity> entities = baseMapper.selectList(new QueryWrapper<CategoryEntity>().eq("parent_cid", 0));
         return entities;
     }
 
-    @Override
+    @Cacheable(value = "category", key = "#root.methodName")
     public Map<String, List<Catelog2Vo>> getCatalogJson() {
+        //将数据库的多次查询变为一次
+        List<CategoryEntity> selectList = this.baseMapper.selectList(null);
+
+        //1、查出所有分类
+        //1、1）查出所有一级分类
+        List<CategoryEntity> level1Categorys = getParent_cid(selectList, 0L);
+
+        //封装数据
+        Map<String, List<Catelog2Vo>> parentCid = level1Categorys.stream().collect(Collectors.toMap(k -> k.getCatId().toString(), v -> {
+            //1、每一个的一级分类,查到这个一级分类的二级分类
+            List<CategoryEntity> categoryEntities = getParent_cid(selectList, v.getCatId());
+
+            //2、封装上面的结果
+            List<Catelog2Vo> catelog2Vos = null;
+            if (categoryEntities != null) {
+                catelog2Vos = categoryEntities.stream().map(l2 -> {
+                    Catelog2Vo catelog2Vo = new Catelog2Vo(v.getCatId().toString(), null, l2.getCatId().toString(), l2.getName().toString());
+
+                    //1、找当前二级分类的三级分类封装成vo
+                    List<CategoryEntity> level3Catelog = getParent_cid(selectList, l2.getCatId());
+
+                    if (level3Catelog != null) {
+                        List<Catelog2Vo.Category3Vo> category3Vos = level3Catelog.stream().map(l3 -> {
+                            //2、封装成指定格式
+                            Catelog2Vo.Category3Vo category3Vo = new Catelog2Vo.Category3Vo(l2.getCatId().toString(), l3.getCatId().toString(), l3.getName());
+
+                            return category3Vo;
+                        }).collect(Collectors.toList());
+                        catelog2Vo.setCatalog3List(category3Vos);
+                    }
+
+                    return catelog2Vo;
+                }).collect(Collectors.toList());
+            }
+
+            return catelog2Vos;
+        }));
+
+        return parentCid;
+    }
+
+    public Map<String, List<Catelog2Vo>> getCatalogJson2() {
 //        压入缓存，缓存中的数据是 json 字符串
         String catalogJson = redisTemplate.opsForValue().get("catalogJson");
         if (StringUtils.isEmpty(catalogJson)) {
@@ -118,11 +165,13 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         });
         return result;
     }
+
     /**
      * 缓存里的数据如何和数据库的数据保持一致？？
      * 缓存数据一致性
      * 1)、双写模式
      * 2)、失效模式
+     *
      * @return
      */
 
@@ -216,7 +265,8 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
         return parentCid;
     }
-    private List<CategoryEntity> getParent_cid(List<CategoryEntity> selectList,Long parentCid) {
+
+    private List<CategoryEntity> getParent_cid(List<CategoryEntity> selectList, Long parentCid) {
         List<CategoryEntity> categoryEntities = selectList.stream().filter(item -> item.getParentCid().equals(parentCid)).collect(Collectors.toList());
         return categoryEntities;
         // return this.baseMapper.selectList(
