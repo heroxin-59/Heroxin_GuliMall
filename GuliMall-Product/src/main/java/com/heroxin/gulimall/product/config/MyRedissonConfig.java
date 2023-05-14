@@ -1,0 +1,34 @@
+package com.heroxin.gulimall.product.config;
+
+/*
+    @Author Heroxin
+    
+    @Create 2023-05-12-17:58
+
+    @Description:
+*/
+
+import org.redisson.Redisson;
+import org.redisson.api.RedissonClient;
+import org.redisson.config.Config;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import java.io.IOException;
+
+@Configuration
+public class MyRedissonConfig {
+    /**
+     * 所有对redisson的使用都是通过调用redissonclient对象实现的
+     * @return
+     * @throws IOException
+     */
+    @Bean(destroyMethod = "shutdown")
+    public RedissonClient redisson() throws IOException{
+//        创建配置
+        Config config = new Config();
+        config.useSingleServer().setAddress("redis://192.168.196.101:6379");
+//        根据config配置创建从redissonclient实例
+        return Redisson.create(config);
+    }
+}
