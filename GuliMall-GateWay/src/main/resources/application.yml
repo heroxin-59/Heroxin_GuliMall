@@ -43,7 +43,13 @@ spring:
         - id: gulimall_host_route
           uri: lb://GuliMall-Product
           predicates:
-            - Host=**.gulimall.com,gulimall.com
+            - Host=gulimall.com
+
+#        gulimall-search
+        - id: gulimall_search_route
+          uri: lb://GuliMall-Search
+          predicates:
+            - Host=search.gulimall.com
 
 server:
   port: 88
