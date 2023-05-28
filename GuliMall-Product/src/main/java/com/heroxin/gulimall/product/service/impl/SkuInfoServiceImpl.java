@@ -1,5 +1,12 @@
 package com.heroxin.gulimall.product.service.impl;
 
+import com.heroxin.gulimall.product.entity.SkuImagesEntity;
+import com.heroxin.gulimall.product.entity.SpuInfoDescEntity;
+import com.heroxin.gulimall.product.service.*;
+import com.heroxin.gulimall.product.vo.SkuItemSaleAttrVo;
+import com.heroxin.gulimall.product.vo.SkuItemVo;
+import com.heroxin.gulimall.product.vo.SpuItemAttrGroupVo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -14,12 +21,47 @@ import com.heroxin.gulimall.common.utils.Query;
 
 import com.heroxin.gulimall.product.dao.SkuInfoDao;
 import com.heroxin.gulimall.product.entity.SkuInfoEntity;
-import com.heroxin.gulimall.product.service.SkuInfoService;
 import org.springframework.util.StringUtils;
 
 
 @Service("skuInfoService")
 public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> implements SkuInfoService {
+    @Autowired
+    private SkuImagesService imagesService;
+    @Autowired
+    private SpuInfoDescService spuInfoDescService;
+    @Autowired
+    private AttrGroupService attrGroupService;
+    @Autowired
+    private SkuSaleAttrValueService skuSaleAttrValueService;
+
+    @Override
+    public SkuItemVo item(Long skuId) {
+        SkuItemVo skuItemVo = new SkuItemVo();
+
+//        sku基本信息获取
+        SkuInfoEntity info = getById(skuId);
+        skuItemVo.setInfo(info);
+        Long catalogId = info.getCatalogId();
+        Long spuId = info.getSpuId();
+
+//        sku图片信息获取
+        List<SkuImagesEntity> images = imagesService.getImagesBySkuId(skuId);
+        skuItemVo.setImages(images);
+
+//        获取spu的销售属性组合
+        List<SkuItemSaleAttrVo> saleAttrVos = skuSaleAttrValueService.getSaleAttrBySpuId(spuId);
+        skuItemVo.setSaleAttr(saleAttrVos);
+
+//        获取spu的介绍
+        SpuInfoDescEntity spuInfoDescEntity = spuInfoDescService.getById(spuId);
+        skuItemVo.setDesc(spuInfoDescEntity);
+
+//        获取spu的规格参数信息
+        List<SpuItemAttrGroupVo> attrGroupVos = attrGroupService.getAttrGroupWithAttrsBySpuId(spuId,catalogId);
+        skuItemVo.setGroupAttrs(attrGroupVos);
+        return skuItemVo;
+    }
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -91,7 +133,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
 
     @Override
     public List<SkuInfoEntity> getSkusBySpuId(Long spuId) {
-        List<SkuInfoEntity> list = this.list(new QueryWrapper<SkuInfoEntity>().eq("spu_id",spuId));
+        List<SkuInfoEntity> list = this.list(new QueryWrapper<SkuInfoEntity>().eq("spu_id", spuId));
         return list;
     }
 
