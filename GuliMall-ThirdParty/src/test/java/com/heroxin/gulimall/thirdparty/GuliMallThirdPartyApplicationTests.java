@@ -67,8 +67,8 @@ class GuliMallThirdPartyApplicationTests {
 
     @Test
     public void testSMS(){
-//        smsComponent.sendSmsConde("15234029443","星星");
-        smsComponent.sendSmsConde("18303390726","星星");
+        smsComponent.sendSmsConde("15234029443","星星");
+//        smsComponent.sendSmsConde("18303390726","星星");
     }
 
 }

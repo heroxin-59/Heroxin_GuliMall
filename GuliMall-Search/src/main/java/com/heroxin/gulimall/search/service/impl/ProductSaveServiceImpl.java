@@ -8,7 +8,6 @@ package com.heroxin.gulimall.search.service.impl;
     @Description:
 */
 
-import cn.hutool.log.Log;
 import com.alibaba.fastjson.JSON;
 import com.heroxin.gulimall.common.to.SkuEsModel;
 import com.heroxin.gulimall.search.config.GuliMallElasticSearchConfig;
