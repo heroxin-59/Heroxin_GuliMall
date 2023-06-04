@@ -13,3 +13,8 @@ alibaba:
     secret-key: bIACRPZOXHntakyApT24cf1gHTT9ac
     oss:
       endpoint: oss-cn-beijing.aliyuncs.com
+    sms:
+      host: https://dfsns.market.alicloudapi.com
+      path: /data/send_sms
+      appcode: 486621825f4e478c976b1ec5546e5764
+      template_id: CST_ptdie100

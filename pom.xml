@@ -18,6 +18,7 @@
         <module>GuliMall-GateWay</module>
         <module>GuliMall-ThirdParty</module>
         <module>GuliMall-Search</module>
+        <module>GuliMall-Auth</module>
         <module>renren-fast</module>
     </modules>
 </project>
