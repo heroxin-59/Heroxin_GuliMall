@@ -16,6 +16,7 @@ import com.heroxin.gulimall.auth.vo.UserRegisterVo;
 import com.heroxin.gulimall.common.constant.AuthServerConstant;
 import com.heroxin.gulimall.common.exception.BizCodeEnume;
 import com.heroxin.gulimall.common.utils.R;
+import com.heroxin.gulimall.common.vo.MemberResponseVo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
@@ -135,7 +137,7 @@ public class LoginController {
      * 用户登录
      * */
     @PostMapping("/login")
-    public String login(UserLoginVo vo, RedirectAttributes redirectAttributes) {
+    public String login(UserLoginVo vo, RedirectAttributes redirectAttributes, HttpSession session) {
         R login = memberFeignService.login(vo);
         if (login.getCode() == 0) {
             return "redirect:http://gulimall.com";

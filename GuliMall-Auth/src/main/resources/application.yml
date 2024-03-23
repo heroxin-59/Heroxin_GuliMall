@@ -1,5 +1,9 @@
 server:
   port: 20000
+  servlet:
+    session:
+#      session 过期时间
+      timeout: 30m
 spring:
   application:
     name: GuliMall-Auth
@@ -11,3 +15,6 @@ spring:
   redis:
     host: 192.168.196.101
     port: 6379
+#    spring session
+  session:
+    store-type: redis

@@ -29,6 +29,9 @@ spring:
       time-to-live: 3600000
       #      设置前缀
 #      key-prefix: CACHE_
+#  spring-session
+  session:
+    store-type: redis
 
 #    配置mybatis-plus，需要扫描mapper文件，设置主键自增
 mybatis-plus:

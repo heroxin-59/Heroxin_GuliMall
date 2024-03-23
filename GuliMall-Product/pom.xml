@@ -20,6 +20,11 @@
             <artifactId>GuliMall-Common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <!--        spring-session-->
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-data-redis</artifactId>
+        </dependency>
         <!--        redis-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -16,6 +16,11 @@
         <aliyun-spring-boot.version>1.0.0</aliyun-spring-boot.version>
     </properties>
     <dependencies>
+        <!--        spring-session-->
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-data-redis</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.heroxin.gulimall</groupId>
             <artifactId>GuliMall-Common</artifactId>

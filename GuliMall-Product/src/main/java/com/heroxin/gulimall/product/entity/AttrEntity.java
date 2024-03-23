@@ -16,7 +16,9 @@ import lombok.Data;
  */
 @Data
 @TableName("pms_attr")
+//	序列化后传输
 public class AttrEntity implements Serializable {
+//	用于验证序列化与反序列化是否为同一对象
 	private static final long serialVersionUID = 1L;
 
 	/**

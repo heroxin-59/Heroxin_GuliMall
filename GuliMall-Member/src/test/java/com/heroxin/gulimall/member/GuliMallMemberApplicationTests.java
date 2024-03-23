@@ -1,19 +1,19 @@
 package com.heroxin.gulimall.member;
 
 
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.codec.digest.Md5Crypt;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 
 class GuliMallMemberApplicationTests {
 
+
     @Test
-    public void testMd5(){
-        String s = DigestUtils.md5Hex("heroxin");
-        System.out.println(s);
-//        盐值加密
-        String s1 = Md5Crypt.md5Crypt("heroxin".getBytes(),"$1$heroxinx");
-        System.out.println(s1);
+    public void bCryptPasswordEncoder(){
+        BCryptPasswordEncoder bc = new BCryptPasswordEncoder();
+        boolean b = bc.matches("heroxin", "$2a$10$4Xvl1DviJqS.ggItgMKmTO6JjbGbiX3btz/qdneVkPmNZ.zhO6br2");
+//        true
+        System.out.println(b);
     }
 
 }
